@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "AVAssetViewController.h"
+#import "UsingAssetsViewController.h"
 
 
 typedef void (^BlockAction)(void);
@@ -30,6 +31,13 @@ typedef void (^BlockAction)(void);
                                [weakSelf.navigationController pushViewController:vc animated:YES];
                            }
                         },
+                       @{
+                           @"title":@"UsingAssets",
+                           @"action":^(void ){
+                               UsingAssetsViewController *vc = [[UsingAssetsViewController alloc]init];
+                               [weakSelf.navigationController pushViewController:vc animated:YES];
+                           }
+                           },
                        ];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 }
