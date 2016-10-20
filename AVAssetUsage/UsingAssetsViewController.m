@@ -13,6 +13,9 @@
 
 @interface UsingAssetsViewController ()
 @property(nonatomic, strong) AVAsset *asset;
+
+@property(nonatomic, strong) AVAssetImageGenerator *imageGenerator;
+
 @end
 
 @implementation UsingAssetsViewController
@@ -32,6 +35,8 @@
     [self Getting_Still_Images_From_a_Video];
 
     [self Generating_a_Single_Image];
+
+    [self Generating_a_Sequence_of_Images];
 }
 
 -(void)Creating_an_Asset_Object
@@ -132,6 +137,9 @@
                 break;
         }
 
+        if (tracksStatus != AVKeyValueStatusLoaded) {
+            return ;
+        }
 
         AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:anAsset];
 
@@ -155,6 +163,84 @@
             // Do something interesting with the image.
             CGImageRelease(halfWayImage);
         }
+
+    }];
+}
+
+-(void)Generating_a_Sequence_of_Images
+{
+    NSString *mediaPath = [[NSBundle mainBundle] pathForResource:@"Sketch" ofType:@"mp4"];
+
+    NSURL *mediaURL = [NSURL fileURLWithPath:mediaPath];
+
+    AVURLAsset *anAsset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
+    NSArray *keys = @[@"duration"];
+
+    [anAsset loadValuesAsynchronouslyForKeys:keys completionHandler:^() {
+
+        NSError *error = nil;
+
+        AVKeyValueStatus tracksStatus = [anAsset statusOfValueForKey:@"duration" error:&error];
+        ZXLog(@"tracksStatus = %zd",tracksStatus);
+        switch (tracksStatus) {
+            case AVKeyValueStatusUnknown:
+                break;
+            case AVKeyValueStatusLoading:
+                break;
+            case AVKeyValueStatusLoaded:
+                self.asset = anAsset;
+                break;
+            case AVKeyValueStatusFailed:
+                break;
+            case AVKeyValueStatusCancelled:
+                break;
+        }
+
+        if (tracksStatus != AVKeyValueStatusLoaded) {
+            return ;
+        }
+
+        self.imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:anAsset];
+
+        CMTime duration = [anAsset duration];
+
+        Float64 durationSeconds = CMTimeGetSeconds(duration);
+
+        CMTime firstThird = CMTimeMakeWithSeconds(durationSeconds/3.0, duration.timescale);
+        CMTime secondThird = CMTimeMakeWithSeconds(durationSeconds*2.0/3.0, duration.timescale);
+        CMTime end = CMTimeMakeWithSeconds(durationSeconds, duration.timescale);
+
+        NSArray *times = @[
+                           [NSValue valueWithCMTime:kCMTimeZero],
+                           [NSValue valueWithCMTime:firstThird],
+                           [NSValue valueWithCMTime:secondThird],
+                           [NSValue valueWithCMTime:end]];
+        
+        [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef  image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * error) {
+
+            NSString *requestTimeString = (NSString *)CFBridgingRelease(CMTimeCopyDescription(NULL, requestedTime));
+            NSString *actualTimeString = (NSString *)CFBridgingRelease(CMTimeCopyDescription(NULL, actualTime));
+            ZXLog(@"RequestedTime:%@ actualTime:%@",requestTimeString,actualTimeString);
+
+            switch (result) {
+                case AVAssetImageGeneratorSucceeded:
+                {
+                    UIImage *imageFromCGImage = [UIImage imageWithCGImage:image];
+                    ZXLog(@"image = %@",imageFromCGImage);
+                    // Do something interesting with the image.
+                    break;
+                }
+                case AVAssetImageGeneratorCancelled:
+                {
+                    break;
+                }
+                case AVAssetImageGeneratorFailed:
+                {
+                    break;
+                }
+            }
+
+        }];
 
     }];
 }
