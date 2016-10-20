@@ -7,6 +7,7 @@
 //
 
 #import "UsingAssetsViewController.h"
+#import <MobileCoreServices/UTType.h>
 
 @import AVFoundation;
 @import Photos;
@@ -37,6 +38,8 @@
     [self Generating_a_Single_Image];
 
     [self Generating_a_Sequence_of_Images];
+
+    [self Trimming_and_Transcoding_a_Movie];
 }
 
 -(void)Creating_an_Asset_Object
@@ -243,5 +246,162 @@
         }];
 
     }];
+}
+
++ (NSString *)getDocumentPath{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return documentsDirectory;
+}
+
++ (NSString *)exportFilePath {
+
+    NSString *filePath = [[self getDocumentPath] stringByAppendingPathComponent:@"exportFilePath.mp4"];
+    return filePath;
+}
+
++ (BOOL)deleteFileAtPath:(NSString *)itemPath error:(NSError **)error {
+
+    BOOL status = YES;
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    if ([fm fileExistsAtPath:itemPath]) {
+        status =  [fm removeItemAtPath:itemPath error:error];
+    }
+    return status;
+}
+
+-(NSString *)exportFullFilePath
+{
+    NSString *filePath = [UsingAssetsViewController exportFilePath];
+    if ([UsingAssetsViewController deleteFileAtPath:filePath error:nil]) {
+        return filePath;
+    }
+    return filePath;
+}
+
+-(void)Trimming_and_Transcoding_a_Movie
+{
+    NSString *mediaPath = [[NSBundle mainBundle] pathForResource:@"Sketch" ofType:@"mp4"];
+
+    NSURL *mediaURL = [NSURL fileURLWithPath:mediaPath];
+
+    AVURLAsset *anAsset = [[AVURLAsset alloc] initWithURL:mediaURL options:nil];
+    NSArray *keys = @[@"exportable",@"duration"];
+
+    [anAsset loadValuesAsynchronouslyForKeys:keys completionHandler:^() {
+
+        NSError *error = nil;
+
+        AVKeyValueStatus tracksStatus = [anAsset statusOfValueForKey:@"exportable" error:&error];
+        ZXLog(@"tracksStatus = %zd",tracksStatus);
+        switch (tracksStatus) {
+            case AVKeyValueStatusUnknown:
+                break;
+            case AVKeyValueStatusLoading:
+                break;
+            case AVKeyValueStatusLoaded:
+                self.asset = anAsset;
+                break;
+            case AVKeyValueStatusFailed:
+                break;
+            case AVKeyValueStatusCancelled:
+                break;
+        }
+
+        if (tracksStatus != AVKeyValueStatusLoaded) {
+            return ;
+        }
+        
+        NSArray<NSString *> *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:anAsset];
+        ZXLog(@"compatiblePresets = %@",compatiblePresets);
+
+        if ([compatiblePresets containsObject:AVAssetExportPreset960x540]) {
+            AVAssetExportSession *exportSession = [[AVAssetExportSession alloc]
+                                                   initWithAsset:anAsset presetName:AVAssetExportPreset960x540];
+
+            //必须设置目标路径
+            NSURL *targetURL = [NSURL fileURLWithPath:[self exportFullFilePath]];
+            exportSession.outputURL = targetURL;
+
+            //可选配置,可以从targetURL的后缀中推断出来
+            exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+
+            //可选配置,默认值 kCMTimeZero..kCMTimePositiveInfinity,代表全部导出.
+            CMTime videoDuration = [anAsset duration];
+            CMTime start = CMTimeMakeWithSeconds(1.0, videoDuration.timescale);
+            CMTime duration = CMTimeMakeWithSeconds(3.0, videoDuration.timescale);
+            CMTimeRange range = CMTimeRangeMake(start, duration);
+            exportSession.timeRange = range;
+
+            [exportSession exportAsynchronouslyWithCompletionHandler:^{
+                AVAssetExportSessionStatus status = [exportSession status];
+                switch (status) {
+                    case AVAssetExportSessionStatusFailed:
+
+                        break;
+                    case AVAssetExportSessionStatusCancelled:
+                        NSLog(@"Export canceled");
+                        break;
+                    default:
+                        break;
+                }
+
+                switch (status) {
+                    case AVAssetExportSessionStatusUnknown: {
+                        ZXLog(@"AVAssetExportSessionStatusUnknown")
+                        break;
+                    }
+                    case AVAssetExportSessionStatusWaiting: {
+                         ZXLog(@"AVAssetExportSessionStatusWaiting")
+                        break;
+                    }
+                    case AVAssetExportSessionStatusExporting: {
+                         ZXLog(@"AVAssetExportSessionStatusExporting")
+                        break;
+                    }
+                    case AVAssetExportSessionStatusCompleted: {
+                        ZXLog(@"AVAssetExportSessionStatusCompleted")
+                        break;
+                    }
+                    case AVAssetExportSessionStatusFailed: {
+                        ZXLog(@"Export failed: %@", [[exportSession error] localizedDescription]);
+                        break;
+                    }
+                    case AVAssetExportSessionStatusCancelled: {
+                        ZXLog(@"AVAssetExportSessionStatusCancelled")
+                        break;
+                    }
+                }
+            }];
+        }
+    }];
+
+    /*
+     (lldb) po compatiblePresets
+     <__NSArrayI 0x7fdb9bd54610>(
+     AVAssetExportPreset1920x1080,
+     AVAssetExportPresetLowQuality,
+     AVAssetExportPresetAppleM4A,
+     AVAssetExportPreset640x480,
+     AVAssetExportPresetHighestQuality,
+     AVAssetExportPreset1280x720,
+     AVAssetExportPresetMediumQuality,
+     AVAssetExportPreset960x540
+     )
+
+     */
+
+    /*
+     typedef NS_ENUM(NSInteger, AVAssetExportSessionStatus) {
+         AVAssetExportSessionStatusUnknown,
+         AVAssetExportSessionStatusWaiting,
+         AVAssetExportSessionStatusExporting,
+         AVAssetExportSessionStatusCompleted,
+         AVAssetExportSessionStatusFailed,
+         AVAssetExportSessionStatusCancelled
+     };
+     */
 }
 @end
