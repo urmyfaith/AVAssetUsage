@@ -215,7 +215,7 @@
                            [NSValue valueWithCMTime:firstThird],
                            [NSValue valueWithCMTime:secondThird],
                            [NSValue valueWithCMTime:end]];
-        
+
         [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times completionHandler:^(CMTime requestedTime, CGImageRef  image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * error) {
 
             NSString *requestTimeString = (NSString *)CFBridgingRelease(CMTimeCopyDescription(NULL, requestedTime));
