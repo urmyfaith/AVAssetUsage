@@ -7,15 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB6052A51DB88D200099A16A /* Sketch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FB6052A41DB88D200099A16A /* Sketch.mp4 */; };
 		FB868B521DB852AD007CBA03 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B511DB852AD007CBA03 /* main.m */; };
 		FB868B551DB852AD007CBA03 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B541DB852AD007CBA03 /* AppDelegate.m */; };
 		FB868B581DB852AD007CBA03 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B571DB852AD007CBA03 /* ViewController.m */; };
 		FB868B5B1DB852AD007CBA03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB868B591DB852AD007CBA03 /* Main.storyboard */; };
 		FB868B5D1DB852AD007CBA03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB868B5C1DB852AD007CBA03 /* Assets.xcassets */; };
 		FB868B601DB852AD007CBA03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB868B5E1DB852AD007CBA03 /* LaunchScreen.storyboard */; };
+		FBD074781DB8B40800998A9E /* AVAssetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD074771DB8B40800998A9E /* AVAssetViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FB6052A41DB88D200099A16A /* Sketch.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sketch.mp4; sourceTree = "<group>"; };
 		FB868B4D1DB852AD007CBA03 /* AVAssetUsage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVAssetUsage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB868B511DB852AD007CBA03 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FB868B531DB852AD007CBA03 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -26,6 +29,8 @@
 		FB868B5C1DB852AD007CBA03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB868B5F1DB852AD007CBA03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB868B611DB852AD007CBA03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBD074761DB8B40800998A9E /* AVAssetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVAssetViewController.h; sourceTree = "<group>"; };
+		FBD074771DB8B40800998A9E /* AVAssetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVAssetViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +63,13 @@
 		FB868B4F1DB852AD007CBA03 /* AVAssetUsage */ = {
 			isa = PBXGroup;
 			children = (
+				FB6052A41DB88D200099A16A /* Sketch.mp4 */,
 				FB868B531DB852AD007CBA03 /* AppDelegate.h */,
 				FB868B541DB852AD007CBA03 /* AppDelegate.m */,
 				FB868B561DB852AD007CBA03 /* ViewController.h */,
 				FB868B571DB852AD007CBA03 /* ViewController.m */,
+				FBD074761DB8B40800998A9E /* AVAssetViewController.h */,
+				FBD074771DB8B40800998A9E /* AVAssetViewController.m */,
 				FB868B591DB852AD007CBA03 /* Main.storyboard */,
 				FB868B5C1DB852AD007CBA03 /* Assets.xcassets */,
 				FB868B5E1DB852AD007CBA03 /* LaunchScreen.storyboard */,
@@ -139,6 +147,7 @@
 				FB868B601DB852AD007CBA03 /* LaunchScreen.storyboard in Resources */,
 				FB868B5D1DB852AD007CBA03 /* Assets.xcassets in Resources */,
 				FB868B5B1DB852AD007CBA03 /* Main.storyboard in Resources */,
+				FB6052A51DB88D200099A16A /* Sketch.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +158,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBD074781DB8B40800998A9E /* AVAssetViewController.m in Sources */,
 				FB868B581DB852AD007CBA03 /* ViewController.m in Sources */,
 				FB868B551DB852AD007CBA03 /* AppDelegate.m in Sources */,
 				FB868B521DB852AD007CBA03 /* main.m in Sources */,
@@ -302,6 +312,7 @@
 				FB868B661DB852AD007CBA03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

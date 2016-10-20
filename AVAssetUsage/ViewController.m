@@ -7,8 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "AVAssetViewController.h"
+
+
+typedef void (^BlockAction)(void);
 
 @interface ViewController ()
+@property (nonatomic,strong) NSArray *dataArray;
 
 @end
 
@@ -16,12 +21,47 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    __weak typeof(self) weakSelf = self;
+    self.dataArray = @[
+                       @{
+                           @"title":@"AVAsset AVMetadataItem AVAssetTrack",
+                           @"action":^(void ){
+                               AVAssetViewController *vc = [[AVAssetViewController alloc]init];
+                               [weakSelf.navigationController pushViewController:vc animated:YES];
+                           }
+                        },
+                       ];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.dataArray.count;
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *SettingsCellIdentifier = @"testingCell";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:SettingsCellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SettingsCellIdentifier];
+    }
+    cell.textLabel.text = [self.dataArray[indexPath.row] objectForKey:@"title"];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    BlockAction action = self.dataArray[indexPath.row][@"action"];
+    if (action) {
+        action();
+    }
+}
 @end
+
