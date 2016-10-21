@@ -322,28 +322,11 @@
 {
     AVAsset *videoAsset = [self Creating_an_Asset_Object];
 
-    AVAssetTrack *audioAssetTrack = [[videoAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
     AVAssetTrack *videoAssetTrack = [[videoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
-
-    AVMutableComposition *mutableComposition = [AVMutableComposition composition];
-
-    AVMutableCompositionTrack *mutableCompositionAudioTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
-    AVMutableCompositionTrack *mutableCompositionVideoTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-
-
-    [mutableCompositionAudioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, audioAssetTrack.timeRange.duration)
-                                          ofTrack:audioAssetTrack
-                                           atTime:kCMTimeZero
-                                            error:nil];
-
-    [mutableCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, videoAssetTrack.timeRange.duration)
-                                          ofTrack:videoAssetTrack
-                                           atTime:kCMTimeZero
-                                            error:nil];
 
     //keypoint  code here.
     AVMutableVideoCompositionInstruction *backgroundColorCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-    backgroundColorCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero,mutableComposition.duration);
+    backgroundColorCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero,videoAssetTrack.timeRange.duration);
     backgroundColorCompositionInstruction.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:0.5].CGColor;
     //keypoint code ene.
 
@@ -352,7 +335,7 @@
     mutableVideoComposition.renderSize = videoAssetTrack.naturalSize;
     mutableVideoComposition.frameDuration = videoAssetTrack.timeRange.duration;
 
-    AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:mutableComposition presetName:AVAssetExportPresetHighestQuality];
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:videoAsset presetName:AVAssetExportPresetHighestQuality];
 
     NSURL *saveURL = [self generate_save_url];
 
