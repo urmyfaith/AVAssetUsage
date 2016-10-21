@@ -23,20 +23,21 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
 
-    [self Creating_a_Composition];
-
-    [self Options_for_Initializing_a_Composition_Track];
-
-    [self Adding_Audiovisual_Data_to_a_Composition];
-
-    [self Retrieving_Compatible_Composition_Tracks];
+//    [self Creating_a_Composition];
+//
+//    [self Options_for_Initializing_a_Composition_Track];
+//
+//    [self Adding_Audiovisual_Data_to_a_Composition];
+//
+//    [self Retrieving_Compatible_Composition_Tracks];
 
 
 //    [self Generating_a_Volume_Ramp];//只有音频轨道
 
 //    [self Generating_a_Volume_Ramp_Verison_2];//音频+视频轨道
 
-    [self Changing_the_Compositions_Backgournd_Color];
+//    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
+    [self Applying_Opacity_Ramps];
 }
 
 -(AVURLAsset *)Creating_an_Asset_Object
@@ -381,4 +382,108 @@
     }];
 }
 
+-(void)Applying_Opacity_Ramps
+{
+    //第一个视频资源
+    AVAsset *firstVideoAsset = [self Creating_an_Asset_Object];
+    AVAssetTrack *firstVideoAssetTrack = [[firstVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
+
+    AVMutableVideoCompositionInstruction *firstVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    firstVideoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration);
+
+    AVMutableVideoCompositionLayerInstruction *firstVideoLayerInstruction  = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstVideoAssetTrack];
+    [firstVideoLayerInstruction setOpacityRampFromStartOpacity:1.f toEndOpacity:0.f timeRange:CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)];
+
+    firstVideoCompositionInstruction.layerInstructions = @[firstVideoLayerInstruction];
+
+
+//    //第二个视频资源.
+//    AVAsset *secondVideoAsset = [self Creating_an_Asset_Object];
+//    AVAssetTrack *secondVideoAssetTrack = [[secondVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
+//
+//    AVMutableVideoCompositionInstruction *secondVideoCompositionInstructition = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+//    secondVideoCompositionInstructition.timeRange = CMTimeRangeMake(kCMTimeZero, secondVideoAssetTrack.timeRange.duration);
+//
+//    AVMutableVideoCompositionLayerInstruction *secondVideoLyaerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:secondVideoAssetTrack];
+//    secondVideoCompositionInstructition.layerInstructions = @[secondVideoLyaerInstruction];
+
+
+//    //两个视频处理组合.
+//    AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
+//    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction, secondVideoCompositionInstructition];
+//    mutableVideoComposition.renderSize = firstVideoAssetTrack.naturalSize;
+//    mutableVideoComposition.frameDuration = CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration);
+//
+//    CMTimeShow(mutableVideoComposition.frameDuration);
+
+    AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
+    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction];
+    mutableVideoComposition.renderSize = firstVideoAssetTrack.naturalSize;
+    mutableVideoComposition.frameDuration = firstVideoAssetTrack.timeRange.duration;
+
+    CMTimeShow(mutableVideoComposition.frameDuration);
+
+//    //两个视频资源整合
+//    AVMutableComposition *mutableComposition = [AVMutableComposition composition];
+//
+//    AVMutableCompositionTrack *firstCompositionVideoTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+//    AVMutableCompositionTrack *secondCompositionVideoTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+//
+//    [firstCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
+//                                          ofTrack:firstVideoAssetTrack
+//                                           atTime:kCMTimeZero
+//                                            error:nil];
+//
+//    [secondCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, secondVideoAssetTrack.timeRange.duration)
+//                                          ofTrack:secondVideoAssetTrack
+//                                           atTime:firstVideoAssetTrack.timeRange.duration
+//                                            error:nil];
+//
+
+    //资源导出
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:firstVideoAsset presetName:AVAssetExportPresetHighestQuality];
+
+    NSURL *saveURL = [self generate_save_url];
+
+    exporter.outputURL = saveURL;
+    exporter.outputFileType = AVFileTypeQuickTimeMovie;
+    exporter.shouldOptimizeForNetworkUse = YES;
+    exporter.videoComposition = mutableVideoComposition;
+
+    [exporter exportAsynchronouslyWithCompletionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            AVAssetExportSessionStatus status = exporter.status;
+            ZXLog(@"exporter status = %zd",status);
+            switch (status) {
+                case AVAssetExportSessionStatusUnknown: {
+                    ZXLog(@"AVAssetExportSessionStatusUnknown")
+                    break;
+                }
+                case AVAssetExportSessionStatusWaiting: {
+                    ZXLog(@"AVAssetExportSessionStatusWaiting")
+                    break;
+                }
+                case AVAssetExportSessionStatusExporting: {
+                    ZXLog(@"AVAssetExportSessionStatusExporting")
+                    break;
+                }
+                case AVAssetExportSessionStatusCompleted: {
+                    ZXLog(@"AVAssetExportSessionStatusCompleted")
+                    if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(saveURL.path)) {
+                        UISaveVideoAtPathToSavedPhotosAlbum(saveURL.path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+                    }
+                    break;
+                }
+                case AVAssetExportSessionStatusFailed: {
+                    ZXLog(@"Export failed: %@", [[exporter error] localizedDescription]);
+                    break;
+                }
+                case AVAssetExportSessionStatusCancelled: {
+                    ZXLog(@"AVAssetExportSessionStatusCancelled")
+                    break;
+                }
+            }
+        });
+    }];
+}
 @end
