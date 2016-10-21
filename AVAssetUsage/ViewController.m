@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "AVAssetViewController.h"
 #import "UsingAssetsViewController.h"
-
+#import "EditingViewController.h"
 
 typedef void (^BlockAction)(void);
 
@@ -35,6 +35,13 @@ typedef void (^BlockAction)(void);
                            @"title":@"UsingAssets",
                            @"action":^(void ){
                                UsingAssetsViewController *vc = [[UsingAssetsViewController alloc]init];
+                               [weakSelf.navigationController pushViewController:vc animated:YES];
+                           }
+                        },
+                       @{
+                           @"title":@"Editing",
+                           @"action":^(void ){
+                               EditingViewController *vc = [[EditingViewController alloc]init];
                                [weakSelf.navigationController pushViewController:vc animated:YES];
                            }
                            },

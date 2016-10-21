@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FB2FDD271DB9B49900B31185 /* EditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2FDD261DB9B49900B31185 /* EditingViewController.m */; };
 		FB3D68091DB8BFA3001A739A /* UsingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3D68081DB8BFA3001A739A /* UsingAssetsViewController.m */; };
 		FB6052A51DB88D200099A16A /* Sketch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FB6052A41DB88D200099A16A /* Sketch.mp4 */; };
 		FB868B521DB852AD007CBA03 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B511DB852AD007CBA03 /* main.m */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FB2FDD251DB9B49900B31185 /* EditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditingViewController.h; sourceTree = "<group>"; };
+		FB2FDD261DB9B49900B31185 /* EditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditingViewController.m; sourceTree = "<group>"; };
 		FB3D68071DB8BFA3001A739A /* UsingAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsingAssetsViewController.h; sourceTree = "<group>"; };
 		FB3D68081DB8BFA3001A739A /* UsingAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsingAssetsViewController.m; sourceTree = "<group>"; };
 		FB3D680A1DB8C2C1001A739A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
@@ -76,6 +79,8 @@
 				FBD074771DB8B40800998A9E /* AVAssetViewController.m */,
 				FB3D68071DB8BFA3001A739A /* UsingAssetsViewController.h */,
 				FB3D68081DB8BFA3001A739A /* UsingAssetsViewController.m */,
+				FB2FDD251DB9B49900B31185 /* EditingViewController.h */,
+				FB2FDD261DB9B49900B31185 /* EditingViewController.m */,
 				FB3D680A1DB8C2C1001A739A /* PrefixHeader.pch */,
 				FB868B591DB852AD007CBA03 /* Main.storyboard */,
 				FB868B5C1DB852AD007CBA03 /* Assets.xcassets */,
@@ -125,6 +130,7 @@
 				TargetAttributes = {
 					FB868B4C1DB852AD007CBA03 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = HMPLSA9ZYN;
 					};
 				};
 			};
@@ -166,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB3D68091DB8BFA3001A739A /* UsingAssetsViewController.m in Sources */,
+				FB2FDD271DB9B49900B31185 /* EditingViewController.m in Sources */,
 				FBD074781DB8B40800998A9E /* AVAssetViewController.m in Sources */,
 				FB868B581DB852AD007CBA03 /* ViewController.m in Sources */,
 				FB868B551DB852AD007CBA03 /* AppDelegate.m in Sources */,
@@ -283,6 +290,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HMPLSA9ZYN;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AVAssetUsage/PrefixHeader.pch";
@@ -297,6 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = HMPLSA9ZYN;
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/AVAssetUsage/PrefixHeader.pch";
