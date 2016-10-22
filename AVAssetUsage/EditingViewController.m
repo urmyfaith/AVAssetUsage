@@ -36,9 +36,9 @@
 
 //    [self Generating_a_Volume_Ramp_Verison_2];//音频+视频轨道
 
-//    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
+    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
 
-    [self Applying_Opacity_Ramps];
+//    [self Applying_Opacity_Ramps];
 //    [self Applying_Opacity_Ramps_Version_2];
 //    [self Combining_Multiple_Assets_and_Saving_the_Result_to_the_Camera_Roll];
 }
@@ -337,7 +337,7 @@
     AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
     mutableVideoComposition.instructions = @[backgroundColorCompositionInstruction];
     mutableVideoComposition.renderSize = videoAssetTrack.naturalSize;
-    mutableVideoComposition.frameDuration = videoAssetTrack.timeRange.duration;
+    mutableVideoComposition.frameDuration = CMTimeMake(1, 60);
 
     AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:videoAsset presetName:AVAssetExportPresetHighestQuality];
 
