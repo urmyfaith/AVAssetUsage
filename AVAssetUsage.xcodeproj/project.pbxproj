@@ -18,6 +18,7 @@
 		FB868B601DB852AD007CBA03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB868B5E1DB852AD007CBA03 /* LaunchScreen.storyboard */; };
 		FBCC8FE11DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCC8FE01DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m */; };
 		FBCC8FE31DBB067C00F730E9 /* Sketch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FBCC8FE21DBB067C00F730E9 /* Sketch.mp4 */; };
+		FBCC8FE71DBB499900F730E9 /* doodlejump4.png in Resources */ = {isa = PBXBuildFile; fileRef = FBCC8FE61DBB499900F730E9 /* doodlejump4.png */; };
 		FBD074781DB8B40800998A9E /* AVAssetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD074771DB8B40800998A9E /* AVAssetViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		FBCC8FDF1DBB02AB00F730E9 /* MBProgressHUD+PDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+PDExtension.h"; sourceTree = "<group>"; };
 		FBCC8FE01DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PDExtension.m"; sourceTree = "<group>"; };
 		FBCC8FE21DBB067C00F730E9 /* Sketch.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sketch.mp4; sourceTree = "<group>"; };
+		FBCC8FE61DBB499900F730E9 /* doodlejump4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = doodlejump4.png; sourceTree = "<group>"; };
 		FBD074761DB8B40800998A9E /* AVAssetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVAssetViewController.h; sourceTree = "<group>"; };
 		FBD074771DB8B40800998A9E /* AVAssetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVAssetViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +112,7 @@
 				FB3D68081DB8BFA3001A739A /* UsingAssetsViewController.m */,
 				FB2FDD251DB9B49900B31185 /* EditingViewController.h */,
 				FB2FDD261DB9B49900B31185 /* EditingViewController.m */,
+				FBCC8FE61DBB499900F730E9 /* doodlejump4.png */,
 				FB3D680A1DB8C2C1001A739A /* PrefixHeader.pch */,
 				FB868B591DB852AD007CBA03 /* Main.storyboard */,
 				FB868B5C1DB852AD007CBA03 /* Assets.xcassets */,
@@ -190,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB868B601DB852AD007CBA03 /* LaunchScreen.storyboard in Resources */,
+				FBCC8FE71DBB499900F730E9 /* doodlejump4.png in Resources */,
 				FB868B5D1DB852AD007CBA03 /* Assets.xcassets in Resources */,
 				FB868B5B1DB852AD007CBA03 /* Main.storyboard in Resources */,
 				FBCC8FE31DBB067C00F730E9 /* Sketch.mp4 in Resources */,

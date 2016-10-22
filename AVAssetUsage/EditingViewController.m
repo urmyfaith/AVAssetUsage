@@ -36,11 +36,14 @@
 
 //    [self Generating_a_Volume_Ramp_Verison_2];//音频+视频轨道
 
-    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
+//    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
 
 //    [self Applying_Opacity_Ramps];
 //    [self Applying_Opacity_Ramps_Version_2];
-//    [self Combining_Multiple_Assets_and_Saving_the_Result_to_the_Camera_Roll];
+
+      [self Incorporating_Core_Animation_Effects];
+
+//      [self Combining_Multiple_Assets_and_Saving_the_Result_to_the_Camera_Roll];
 }
 
 -(AVURLAsset *)Creating_an_Asset_Object
@@ -569,6 +572,144 @@
             }];
         });
 
+    }];
+}
+
+-(void)Incorporating_Core_Animation_Effects
+{
+    AVAsset *firstVideoAsset = [self Creating_an_Asset_Object];
+    AVAssetTrack *firstVideoAssetTrack = [[firstVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
+
+    AVMutableVideoCompositionInstruction *firstVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    firstVideoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration);
+
+    AVMutableVideoCompositionLayerInstruction *firstVideoLayerInstruction  = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:firstVideoAssetTrack];
+    [firstVideoLayerInstruction setOpacityRampFromStartOpacity:1.f toEndOpacity:0.f timeRange:CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)];
+    firstVideoCompositionInstruction.layerInstructions = @[firstVideoLayerInstruction];
+
+
+    AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
+    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction];
+    mutableVideoComposition.renderSize = firstVideoAssetTrack.naturalSize;
+    mutableVideoComposition.frameDuration = CMTimeMake(1, 60);
+
+    //keypoint code here....
+    CGRect outputVideoFrame =  CGRectMake(0, 0, mutableVideoComposition.renderSize.width, mutableVideoComposition.renderSize.height);
+
+    CALayer *watermarkLayer = [CALayer layer];
+    watermarkLayer.frame = outputVideoFrame;
+
+    CALayer *imageLayer = [CALayer layer];
+    UIImage *image = [UIImage imageNamed:@"doodlejump4.png"];
+    CGSize imageSize = CGSizeMake(100, 100);
+
+    imageLayer.frame = CGRectMake(outputVideoFrame.size.width/2.0 -  imageSize.width,
+                                  outputVideoFrame.size.height/2.0 - imageSize.height/2.0,
+                                  imageSize.width,
+                                  imageSize.height);
+    imageLayer.contents = (__bridge id)(image.CGImage);
+    [watermarkLayer addSublayer:imageLayer];
+
+    CATextLayer *textlayer = [CATextLayer layer];
+    textlayer.string = @"GUD Mini @zx";
+    textlayer.fontSize = 16;
+    textlayer.contentsScale = 2;
+    textlayer.font = (__bridge CFTypeRef)(@"HiraKakuProN-W3");
+    textlayer.alignmentMode = @"center";
+    textlayer.frame = CGRectMake(0, outputVideoFrame.size.width - 60, 200, 60);
+    [watermarkLayer addSublayer:textlayer];
+
+
+    CALayer *parentLayer = [CALayer layer];
+    CALayer *videoLayer = [CALayer layer];
+    parentLayer.frame = outputVideoFrame;
+    videoLayer.frame = outputVideoFrame;
+
+    CATextLayer *topText = [CATextLayer layer];
+    topText.string = @"Directed by zx";
+    topText.fontSize = 14;
+    topText.contentsScale = 2;
+    topText.font = (__bridge CFTypeRef)(@"HiraKakuProN-W3");
+    topText.alignmentMode = @"left";
+    topText.frame = CGRectMake(outputVideoFrame.size.width/2.0,
+                                outputVideoFrame.size.height/2.0 - imageSize.height/2.0,
+                                200,
+                               imageSize.height * 1.0/ 4.0);
+    [watermarkLayer addSublayer:topText];
+
+    CATextLayer *centerText = [CATextLayer layer];
+    centerText.string = @"GoPro v0.1";
+    centerText.fontSize = 32;
+    centerText.contentsScale = 2;
+    centerText.font = (__bridge CFTypeRef)(@"HiraKakuProN-W3");
+    centerText.alignmentMode = @"left";
+    centerText.frame = CGRectMake(outputVideoFrame.size.width/2.0,
+                               outputVideoFrame.size.height/2.0 - imageSize.height/2.0 + imageSize.height*1.0/4.0,
+                               200,
+                               imageSize.height * 2.0/ 4.0);
+    [watermarkLayer addSublayer:centerText];
+
+    CATextLayer *bottomText = [CATextLayer layer];
+    bottomText.string = @"Flying the worlds";
+    bottomText.fontSize = 16;
+    bottomText.contentsScale = 2;
+    bottomText.font = (__bridge CFTypeRef)(@"HiraKakuProN-W3");
+    bottomText.alignmentMode = @"left";
+    bottomText.frame = CGRectMake(outputVideoFrame.size.width/2.0,
+                               outputVideoFrame.size.height/2.0 - imageSize.height/2.0 + imageSize.height * 3.0/4.0,
+                               200,
+                               imageSize.height * 1.0/ 4.0);
+    [watermarkLayer addSublayer:bottomText];
+
+    //keypint code start here...
+    [parentLayer addSublayer:videoLayer];
+    [parentLayer addSublayer:watermarkLayer];
+    mutableVideoComposition.animationTool = [AVVideoCompositionCoreAnimationTool videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayer:videoLayer inLayer:parentLayer];
+    //keypoint code end here...
+
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:firstVideoAsset presetName:AVAssetExportPresetHighestQuality];
+
+    NSURL *saveURL = [self generate_save_url];
+
+    exporter.outputURL = saveURL;
+    exporter.outputFileType = AVFileTypeQuickTimeMovie;
+    exporter.shouldOptimizeForNetworkUse = YES;
+    exporter.videoComposition = mutableVideoComposition;
+
+    [exporter exportAsynchronouslyWithCompletionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            AVAssetExportSessionStatus status = exporter.status;
+            ZXLog(@"exporter status = %zd",status);
+            switch (status) {
+                case AVAssetExportSessionStatusUnknown: {
+                    ZXLog(@"AVAssetExportSessionStatusUnknown")
+                    break;
+                }
+                case AVAssetExportSessionStatusWaiting: {
+                    ZXLog(@"AVAssetExportSessionStatusWaiting")
+                    break;
+                }
+                case AVAssetExportSessionStatusExporting: {
+                    ZXLog(@"AVAssetExportSessionStatusExporting")
+                    break;
+                }
+                case AVAssetExportSessionStatusCompleted: {
+                    ZXLog(@"AVAssetExportSessionStatusCompleted")
+                    if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(saveURL.path)) {
+                        UISaveVideoAtPathToSavedPhotosAlbum(saveURL.path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+                    }
+                    break;
+                }
+                case AVAssetExportSessionStatusFailed: {
+                    ZXLog(@"Export failed: %@", [[exporter error] localizedDescription]);
+                    break;
+                }
+                case AVAssetExportSessionStatusCancelled: {
+                    ZXLog(@"AVAssetExportSessionStatusCancelled")
+                    break;
+                }
+            }
+        });
     }];
 }
 
