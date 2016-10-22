@@ -38,8 +38,8 @@
 
 //    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
 
-//        [self Applying_Opacity_Ramps];
-    [self Applying_Opacity_Ramps_Version_2];
+    [self Applying_Opacity_Ramps];
+//    [self Applying_Opacity_Ramps_Version_2];
 //    [self Combining_Multiple_Assets_and_Saving_the_Result_to_the_Camera_Roll];
 }
 
@@ -387,7 +387,6 @@
 
 -(void)Applying_Opacity_Ramps
 {
-    //第一个视频资源
     AVAsset *firstVideoAsset = [self Creating_an_Asset_Object];
     AVAssetTrack *firstVideoAssetTrack = [[firstVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
 
@@ -400,50 +399,11 @@
     firstVideoCompositionInstruction.layerInstructions = @[firstVideoLayerInstruction];
 
 
-//    //第二个视频资源.
-//    AVAsset *secondVideoAsset = [self Creating_an_Asset_Object];
-//    AVAssetTrack *secondVideoAssetTrack = [[secondVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
-//
-//    AVMutableVideoCompositionInstruction *secondVideoCompositionInstructition = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-//    secondVideoCompositionInstructition.timeRange = CMTimeRangeMake(kCMTimeZero, secondVideoAssetTrack.timeRange.duration);
-//
-//    AVMutableVideoCompositionLayerInstruction *secondVideoLyaerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:secondVideoAssetTrack];
-//    secondVideoCompositionInstructition.layerInstructions = @[secondVideoLyaerInstruction];
-
-
-//    //两个视频处理组合.
-//    AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
-//    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction, secondVideoCompositionInstructition];
-//    mutableVideoComposition.renderSize = firstVideoAssetTrack.naturalSize;
-//    mutableVideoComposition.frameDuration = CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration);
-//
-//    CMTimeShow(mutableVideoComposition.frameDuration);
-
     AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
     mutableVideoComposition.instructions = @[firstVideoCompositionInstruction];
     mutableVideoComposition.renderSize = firstVideoAssetTrack.naturalSize;
-    mutableVideoComposition.frameDuration = firstVideoAssetTrack.timeRange.duration;
+    mutableVideoComposition.frameDuration = CMTimeMake(1, 60);
 
-    CMTimeShow(mutableVideoComposition.frameDuration);
-
-//    //两个视频资源整合
-//    AVMutableComposition *mutableComposition = [AVMutableComposition composition];
-//
-//    AVMutableCompositionTrack *firstCompositionVideoTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-//    AVMutableCompositionTrack *secondCompositionVideoTrack = [mutableComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
-//
-//    [firstCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)
-//                                          ofTrack:firstVideoAssetTrack
-//                                           atTime:kCMTimeZero
-//                                            error:nil];
-//
-//    [secondCompositionVideoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, secondVideoAssetTrack.timeRange.duration)
-//                                          ofTrack:secondVideoAssetTrack
-//                                           atTime:firstVideoAssetTrack.timeRange.duration
-//                                            error:nil];
-//
-
-    //资源导出
     AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:firstVideoAsset presetName:AVAssetExportPresetHighestQuality];
 
     NSURL *saveURL = [self generate_save_url];
