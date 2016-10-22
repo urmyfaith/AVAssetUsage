@@ -7,25 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2359016A404F3824BD54EA9A /* libPods-AVAssetUsage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F659F61DF316770BBEECB98 /* libPods-AVAssetUsage.a */; };
 		FB2FDD271DB9B49900B31185 /* EditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2FDD261DB9B49900B31185 /* EditingViewController.m */; };
 		FB3D68091DB8BFA3001A739A /* UsingAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB3D68081DB8BFA3001A739A /* UsingAssetsViewController.m */; };
-		FB6052A51DB88D200099A16A /* Sketch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FB6052A41DB88D200099A16A /* Sketch.mp4 */; };
 		FB868B521DB852AD007CBA03 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B511DB852AD007CBA03 /* main.m */; };
 		FB868B551DB852AD007CBA03 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B541DB852AD007CBA03 /* AppDelegate.m */; };
 		FB868B581DB852AD007CBA03 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB868B571DB852AD007CBA03 /* ViewController.m */; };
 		FB868B5B1DB852AD007CBA03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB868B591DB852AD007CBA03 /* Main.storyboard */; };
 		FB868B5D1DB852AD007CBA03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB868B5C1DB852AD007CBA03 /* Assets.xcassets */; };
 		FB868B601DB852AD007CBA03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB868B5E1DB852AD007CBA03 /* LaunchScreen.storyboard */; };
+		FBCC8FE11DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = FBCC8FE01DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m */; };
+		FBCC8FE31DBB067C00F730E9 /* Sketch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = FBCC8FE21DBB067C00F730E9 /* Sketch.mp4 */; };
 		FBD074781DB8B40800998A9E /* AVAssetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBD074771DB8B40800998A9E /* AVAssetViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1FDEBAB85F8977CF963ABB50 /* Pods-AVAssetUsage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AVAssetUsage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AVAssetUsage/Pods-AVAssetUsage.debug.xcconfig"; sourceTree = "<group>"; };
+		46A2C5F926C426519755BA97 /* Pods-AVAssetUsage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AVAssetUsage.release.xcconfig"; path = "Pods/Target Support Files/Pods-AVAssetUsage/Pods-AVAssetUsage.release.xcconfig"; sourceTree = "<group>"; };
+		6F659F61DF316770BBEECB98 /* libPods-AVAssetUsage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AVAssetUsage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB2FDD251DB9B49900B31185 /* EditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditingViewController.h; sourceTree = "<group>"; };
 		FB2FDD261DB9B49900B31185 /* EditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditingViewController.m; sourceTree = "<group>"; };
 		FB3D68071DB8BFA3001A739A /* UsingAssetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UsingAssetsViewController.h; sourceTree = "<group>"; };
 		FB3D68081DB8BFA3001A739A /* UsingAssetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UsingAssetsViewController.m; sourceTree = "<group>"; };
 		FB3D680A1DB8C2C1001A739A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		FB6052A41DB88D200099A16A /* Sketch.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sketch.mp4; sourceTree = "<group>"; };
 		FB868B4D1DB852AD007CBA03 /* AVAssetUsage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AVAssetUsage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB868B511DB852AD007CBA03 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FB868B531DB852AD007CBA03 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -36,6 +40,9 @@
 		FB868B5C1DB852AD007CBA03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB868B5F1DB852AD007CBA03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FB868B611DB852AD007CBA03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FBCC8FDF1DBB02AB00F730E9 /* MBProgressHUD+PDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+PDExtension.h"; sourceTree = "<group>"; };
+		FBCC8FE01DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+PDExtension.m"; sourceTree = "<group>"; };
+		FBCC8FE21DBB067C00F730E9 /* Sketch.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Sketch.mp4; sourceTree = "<group>"; };
 		FBD074761DB8B40800998A9E /* AVAssetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVAssetViewController.h; sourceTree = "<group>"; };
 		FBD074771DB8B40800998A9E /* AVAssetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVAssetViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -45,17 +52,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2359016A404F3824BD54EA9A /* libPods-AVAssetUsage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		79099E4C9CD95EBC2BFF260B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F659F61DF316770BBEECB98 /* libPods-AVAssetUsage.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8584F5E4353DEE16FBA892D8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1FDEBAB85F8977CF963ABB50 /* Pods-AVAssetUsage.debug.xcconfig */,
+				46A2C5F926C426519755BA97 /* Pods-AVAssetUsage.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		FB868B441DB852AD007CBA03 = {
 			isa = PBXGroup;
 			children = (
+				FBCC8FDF1DBB02AB00F730E9 /* MBProgressHUD+PDExtension.h */,
+				FBCC8FE01DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m */,
 				FB868B4F1DB852AD007CBA03 /* AVAssetUsage */,
 				FB868B4E1DB852AD007CBA03 /* Products */,
+				8584F5E4353DEE16FBA892D8 /* Pods */,
+				79099E4C9CD95EBC2BFF260B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,7 +99,7 @@
 		FB868B4F1DB852AD007CBA03 /* AVAssetUsage */ = {
 			isa = PBXGroup;
 			children = (
-				FB6052A41DB88D200099A16A /* Sketch.mp4 */,
+				FBCC8FE21DBB067C00F730E9 /* Sketch.mp4 */,
 				FB868B531DB852AD007CBA03 /* AppDelegate.h */,
 				FB868B541DB852AD007CBA03 /* AppDelegate.m */,
 				FB868B561DB852AD007CBA03 /* ViewController.h */,
@@ -106,9 +135,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FB868B641DB852AD007CBA03 /* Build configuration list for PBXNativeTarget "AVAssetUsage" */;
 			buildPhases = (
+				BAADFD0F1705ECD5DE6737D1 /* [CP] Check Pods Manifest.lock */,
 				FB868B491DB852AD007CBA03 /* Sources */,
 				FB868B4A1DB852AD007CBA03 /* Frameworks */,
 				FB868B4B1DB852AD007CBA03 /* Resources */,
+				52DAC53215ED3D877AB13DEF /* [CP] Embed Pods Frameworks */,
+				3A2691B3DB51BDB93ACF6B60 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -160,17 +192,66 @@
 				FB868B601DB852AD007CBA03 /* LaunchScreen.storyboard in Resources */,
 				FB868B5D1DB852AD007CBA03 /* Assets.xcassets in Resources */,
 				FB868B5B1DB852AD007CBA03 /* Main.storyboard in Resources */,
-				FB6052A51DB88D200099A16A /* Sketch.mp4 in Resources */,
+				FBCC8FE31DBB067C00F730E9 /* Sketch.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3A2691B3DB51BDB93ACF6B60 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AVAssetUsage/Pods-AVAssetUsage-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		52DAC53215ED3D877AB13DEF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AVAssetUsage/Pods-AVAssetUsage-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAADFD0F1705ECD5DE6737D1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FB868B491DB852AD007CBA03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBCC8FE11DBB02AB00F730E9 /* MBProgressHUD+PDExtension.m in Sources */,
 				FB3D68091DB8BFA3001A739A /* UsingAssetsViewController.m in Sources */,
 				FB2FDD271DB9B49900B31185 /* EditingViewController.m in Sources */,
 				FBD074781DB8B40800998A9E /* AVAssetViewController.m in Sources */,
@@ -292,6 +373,7 @@
 		};
 		FB868B651DB852AD007CBA03 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1FDEBAB85F8977CF963ABB50 /* Pods-AVAssetUsage.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HMPLSA9ZYN;
@@ -307,6 +389,7 @@
 		};
 		FB868B661DB852AD007CBA03 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 46A2C5F926C426519755BA97 /* Pods-AVAssetUsage.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HMPLSA9ZYN;
