@@ -39,8 +39,8 @@
 //    [self Changing_the_Compositions_Backgournd_Color];//改变背景颜色
 
 //        [self Applying_Opacity_Ramps];
-//    [self Applying_Opacity_Ramps_Version_2];
-    [self Combining_Multiple_Assets_and_Saving_the_Result_to_the_Camera_Roll];
+    [self Applying_Opacity_Ramps_Version_2];
+//    [self Combining_Multiple_Assets_and_Saving_the_Result_to_the_Camera_Roll];
 }
 
 -(AVURLAsset *)Creating_an_Asset_Object
@@ -494,12 +494,11 @@
     //资源
     AVAsset *firstVideoAsset = [self Creating_an_Asset_Object];
     AVAssetTrack *firstVideoAssetTrack = [[firstVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
-
-    AVAssetTrack *audioAssetTrack = [[firstVideoAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
+    AVAssetTrack *firstAudioAssetTrack = [[firstVideoAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
 
     AVAsset *secondVideoAsset = [self Creating_an_Asset_Object];
     AVAssetTrack *secondVideoAssetTrack = [[secondVideoAsset tracksWithMediaType:AVMediaTypeVideo] firstObject];
-
+    AVAssetTrack *secondAudioAssetTrack = [[secondVideoAsset tracksWithMediaType:AVMediaTypeAudio] firstObject];
 
 
     //两个视频资源整合
@@ -520,11 +519,14 @@
                                     atTime:firstVideoAssetTrack.timeRange.duration
                                      error:nil];
 
-    [audioCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero,firstVideoAssetTrack.timeRange.duration)
-                                         ofTrack:audioAssetTrack
+    [audioCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero,firstAudioAssetTrack.timeRange.duration)
+                                         ofTrack:firstAudioAssetTrack
                                           atTime:kCMTimeZero
                                            error:nil];
-
+    [audioCompositionTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero,secondAudioAssetTrack.timeRange.duration)
+                                   ofTrack:secondAudioAssetTrack
+                                    atTime:firstAudioAssetTrack.timeRange.duration
+                                     error:nil];
 
     AVMutableVideoCompositionInstruction *firstVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
     firstVideoCompositionInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration);
@@ -532,28 +534,28 @@
     AVMutableVideoCompositionLayerInstruction *firstVideoLayerInstruction  = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
     [firstVideoLayerInstruction setOpacityRampFromStartOpacity:1.f toEndOpacity:0.f timeRange:CMTimeRangeMake(kCMTimeZero, firstVideoAssetTrack.timeRange.duration)];
     [firstVideoLayerInstruction setTransform:firstVideoAssetTrack.preferredTransform atTime:kCMTimeZero];
-
     firstVideoCompositionInstruction.layerInstructions = @[firstVideoLayerInstruction];
 
 
-//    AVMutableVideoCompositionInstruction * secondVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-//    secondVideoCompositionInstruction.timeRange = CMTimeRangeMake(firstVideoAssetTrack.timeRange.duration, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration));
-//    AVMutableVideoCompositionLayerInstruction *secondVideoLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
-//    [secondVideoLayerInstruction setTransform:secondVideoAssetTrack.preferredTransform atTime:firstVideoAssetTrack.timeRange.duration];
-//    secondVideoCompositionInstruction.layerInstructions = @[secondVideoLayerInstruction];
+    AVMutableVideoCompositionInstruction * secondVideoCompositionInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    secondVideoCompositionInstruction.timeRange = CMTimeRangeMake(firstVideoAssetTrack.timeRange.duration, CMTimeAdd(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration));
+    AVMutableVideoCompositionLayerInstruction *secondVideoLayerInstruction = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoCompositionTrack];
+    [secondVideoLayerInstruction setTransform:secondVideoAssetTrack.preferredTransform
+                                       atTime:firstVideoAssetTrack.timeRange.duration];
+    [secondVideoLayerInstruction setOpacityRampFromStartOpacity:0.f
+                                                   toEndOpacity:1.f
+                                                      timeRange:CMTimeRangeMake(firstVideoAssetTrack.timeRange.duration, secondVideoAssetTrack.timeRange.duration)];
+    secondVideoCompositionInstruction.layerInstructions = @[secondVideoLayerInstruction];
 
-    //两个视频处理组合.
     AVMutableVideoComposition *mutableVideoComposition = [AVMutableVideoComposition videoComposition];
-    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction];
+    mutableVideoComposition.instructions = @[firstVideoCompositionInstruction,secondVideoCompositionInstruction];
     mutableVideoComposition.renderSize = firstVideoAssetTrack.naturalSize;
     mutableVideoComposition.frameDuration = CMTimeMake(1,60);
 
-    CMTimeShow(mutableVideoComposition.frameDuration);
-
-//    ZXLog(@"%@ %@ %@ %@",firstVideoLayerInstruction,firstVideoCompositionInstruction,secondVideoLayerInstruction,secondVideoCompositionInstruction);
     //资源导出
 
     [AVAssetExportSession determineCompatibilityOfExportPreset:AVAssetExportPresetHighestQuality withAsset:mutableComposition outputFileType:AVFileTypeQuickTimeMovie completionHandler:^(BOOL compatible) {
+
         ZXLog(@" compatible to export %@",compatible ? @"YES" : @"NO");
 
         AVAssetExportSession *exporter = [[AVAssetExportSession alloc]initWithAsset:mutableComposition presetName:AVAssetExportPresetHighestQuality];
@@ -563,43 +565,50 @@
         exporter.outputURL = saveURL;
         exporter.outputFileType = AVFileTypeQuickTimeMovie;
         exporter.shouldOptimizeForNetworkUse = YES;
-//        exporter.videoComposition = mutableVideoComposition;
+        exporter.videoComposition = mutableVideoComposition;
 
-        [exporter exportAsynchronouslyWithCompletionHandler:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                AVAssetExportSessionStatus status = exporter.status;
-                ZXLog(@"exporter status = %zd",status);
-                switch (status) {
-                    case AVAssetExportSessionStatusUnknown: {
-                        ZXLog(@"AVAssetExportSessionStatusUnknown")
-                        break;
-                    }
-                    case AVAssetExportSessionStatusWaiting: {
-                        ZXLog(@"AVAssetExportSessionStatusWaiting")
-                        break;
-                    }
-                    case AVAssetExportSessionStatusExporting: {
-                        ZXLog(@"AVAssetExportSessionStatusExporting")
-                        break;
-                    }
-                    case AVAssetExportSessionStatusCompleted: {
-                        ZXLog(@"AVAssetExportSessionStatusCompleted")
-                        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(saveURL.path)) {
-                            UISaveVideoAtPathToSavedPhotosAlbum(saveURL.path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [MBProgressHUD showMessage:@"Exporting..."];
+
+            [exporter exportAsynchronouslyWithCompletionHandler:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    AVAssetExportSessionStatus status = exporter.status;
+                    ZXLog(@"exporter status = %zd",status);
+                    [MBProgressHUD showToastWithMessage:@"Done Export."];
+                    switch (status) {
+                        case AVAssetExportSessionStatusUnknown: {
+                            ZXLog(@"AVAssetExportSessionStatusUnknown")
+                            break;
                         }
-                        break;
+                        case AVAssetExportSessionStatusWaiting: {
+                            ZXLog(@"AVAssetExportSessionStatusWaiting")
+                            break;
+                        }
+                        case AVAssetExportSessionStatusExporting: {
+                            ZXLog(@"AVAssetExportSessionStatusExporting")
+                            break;
+                        }
+                        case AVAssetExportSessionStatusCompleted: {
+                            ZXLog(@"AVAssetExportSessionStatusCompleted")
+                            if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(saveURL.path)) {
+                                UISaveVideoAtPathToSavedPhotosAlbum(saveURL.path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+                            }
+                            break;
+                        }
+                        case AVAssetExportSessionStatusFailed: {
+                            ZXLog(@"Export failed: %@", [[exporter error] localizedDescription]);
+                            break;
+                        }
+                        case AVAssetExportSessionStatusCancelled: {
+                            ZXLog(@"AVAssetExportSessionStatusCancelled")
+                            break;
+                        }
                     }
-                    case AVAssetExportSessionStatusFailed: {
-                        ZXLog(@"Export failed: %@", [[exporter error] localizedDescription]);
-                        break;
-                    }
-                    case AVAssetExportSessionStatusCancelled: {
-                        ZXLog(@"AVAssetExportSessionStatusCancelled")
-                        break;
-                    }
-                }
-            });
-        }];
+                });
+            }];
+        });
+
     }];
 }
 
@@ -710,7 +719,7 @@
         renderHeight = naturalSizeSecond.height;
     }
     mutableVideoComposition.renderSize = CGSizeMake(renderWidth, renderHeight);
-    mutableVideoComposition.frameDuration = CMTimeMake(1,30);
+    mutableVideoComposition.frameDuration = CMTimeMake(1,60);
 
 
     //6. Exporting the Composition and Saving it to the Camera Roll
@@ -721,12 +730,12 @@
     exporter.outputFileType = AVFileTypeQuickTimeMovie;
     exporter.shouldOptimizeForNetworkUse = YES;
     exporter.videoComposition = mutableVideoComposition;
-    [MBProgressHUD showMessage:@"导出中..."];
+    [MBProgressHUD showMessage:@"Exporting..."];
     [exporter exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             AVAssetExportSessionStatus status = exporter.status;
             ZXLog(@"exporter status = %zd",status);
-            [MBProgressHUD showToastWithMessage:@"导出结束"];
+            [MBProgressHUD showToastWithMessage:@"Done Export."];
             switch (status) {
                 case AVAssetExportSessionStatusUnknown: {
                     ZXLog(@"AVAssetExportSessionStatusUnknown")
